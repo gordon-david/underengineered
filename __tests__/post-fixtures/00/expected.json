@@ -1,0 +1,81 @@
+{
+  "tags": {
+    "tags": [
+      "linux",
+      "software"
+    ],
+    "tagMap": {
+      "tags": {
+        "linux": [
+          "linux-post",
+          "linux-software-post"
+        ],
+        "software": [
+          "software-post",
+          "linux-software-post"
+        ]
+      },
+      "notTagged": [
+        "blank"
+      ]
+    }
+  },
+  "categoryTree": {
+    "root": {
+      "slug": "",
+      "type": "category",
+      "name": "",
+      "children": [
+        {
+          "slug": "blank",
+          "type": "post",
+          "title": "Blank",
+          "category": "",
+          "uuid": "831706f3-2a0f-451e-ac4a-ef2f3ee9a58f"
+        },
+        {
+          "slug": "linux",
+          "type": "category",
+          "name": "linux",
+          "children": [
+            {
+              "slug": "linux-post",
+              "title": "Linux Post",
+              "type": "post",
+              "category": "linux",
+              "uuid": "d71b8ddb-c327-47eb-bb15-85101e47983f"
+            },
+            {
+              "slug": "linux/software",
+              "name": "software",
+              "type": "category",
+              "children": [
+                {
+                  "slug": "linux-software-post",
+                  "type": "post",
+                  "title": "Linux Software Post",
+                  "uuid": "2f341884-607d-42da-b9c2-8afe0e61cc10",
+                  "category": "linux/software"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "software",
+          "name": "software",
+          "type": "category",
+          "children": [
+            {
+              "slug": "software-post",
+              "type": "post",
+              "title": "Software Post",
+              "category": "software",
+              "uuid": "b7acb858-3a41-40c8-9efb-7444e3390459"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
