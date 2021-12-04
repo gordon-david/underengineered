@@ -138,3 +138,18 @@ function useModel() {
   return context
 }
 ```
+
+**Using a Wrapper Object's Updated Reference**
+
+With large models, we may not wish to always rebuild instance from scratch. One option is to wrap the model instance in a light object and update the wrapper object between mutations. This triggers a rerender without needing to processes a complicated constructor or build a new model instance.
+
+```tsx
+function Container(){
+  const [wrapper, setWrapper] = useState({model: new Model("test", 42)})
+
+  handleClick = () => {
+    wrapper.model.value += 1
+    setWrapper({model: wrapper.model})
+  }
+}
+```
