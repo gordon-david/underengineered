@@ -1,5 +1,6 @@
 ---
 title: "Blog Notes"
+excerpt: "Design and technical overview of this blog."
 date: "2021-11-3"
 ---
 
