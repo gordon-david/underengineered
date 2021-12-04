@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from "fs";
 import path from "path";
 import matter from 'gray-matter'
 import { Post, PostFilter, PostJson } from "./Post";
-import {CategoryTree, CategoryTreeNode, PostTreeNode, Taxonomy, postSlug, tagList, tagMap, tagName, tags} from "./PostService.types"
+import { CategoryTree, CategoryTreeNode, PostTreeNode, Taxonomy, postSlug, tagList, tagMap, tagName, tags } from "./PostService.types"
 export default class PostService {
   postsDirectory: string = path.join(process.cwd(), '_posts')
 
@@ -86,7 +86,7 @@ export default class PostService {
   }
   allPosts(): Post[] {
     const posts: Post[] = this.postSlugs().map(s => this.postBySlug(s))
-    return posts
+    return posts.sort((a, b) => Date.parse(a.date) < Date.parse(b.date) ? 1 : -1)
   }
   tags(): tags {
     let tags: Set<tagName> = new Set()
