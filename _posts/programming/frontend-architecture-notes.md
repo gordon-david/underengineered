@@ -1,5 +1,6 @@
 ---
 title: "Architectures For Separating Model Concerns in Frontend Web Applications"
+excerpt: "A very basic example of separating domain model concerns from view-layer logic."
 tags: [programming, react, typescript, javascript, snippets]
 date: "2021-12-8"
 ---
