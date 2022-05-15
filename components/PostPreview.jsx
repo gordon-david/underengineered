@@ -23,7 +23,7 @@ export default function PostPreview({
       <div>
         {tags.map((tag) => {
           return (
-            <Link href={`/posts/tags/${tag}`}>
+            <Link href={`/posts/tags/${tag}`} key={tag}>
               <a className="tag">
                 <span>
                   <small>{`#${tag} `}</small>

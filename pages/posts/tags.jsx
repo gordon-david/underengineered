@@ -14,13 +14,13 @@ export default function Tags({ tagMap, taxonomy }) {
             </li>
           );
           const list = tagMap[tag].map((item) => (
-            <li>
+            <li key={item}>
               <Link href={`/posts/${item}`}>
                 <a>{`${item}`}</a>
               </Link>
             </li>
           ));
-          return [label, <ul> {list} </ul>];
+          return [label, <ul key={'unique'}> {list} </ul>];
         })}
       </div>
     </Layout>

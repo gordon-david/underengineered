@@ -25,6 +25,7 @@ export default function PostList({ allPosts, tagMap }) {
         excerpt={post.excerpt}
         tags={post.tags}
         slug={post.slug}
+        key={post.slug}
       />
     ));
   };
@@ -47,6 +48,7 @@ export default function PostList({ allPosts, tagMap }) {
           <button
             className={`filter ${chosenTags.has(tag) ? "inclusive" : ""}`}
             onClick={() => handleTagClick(tag)}
+            key={tag}
           >
             {tag}
           </button>

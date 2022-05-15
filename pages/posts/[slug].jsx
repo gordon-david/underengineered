@@ -24,7 +24,7 @@ export default function Post({ post, taxonomy }) {
             <h1>{post.title}</h1>
             <div>
               {post.tags.map((tag) => (
-                <Link href={`/posts/tags/${tag}`}>
+                <Link href={`/posts/tags/${tag}`} key={tag}>
                   <a>
                     <small>{`#${tag} `}</small>
                   </a>
