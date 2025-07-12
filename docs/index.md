@@ -1,0 +1,1 @@
+The aim of this site is to provide documentation and working examples of technical topics.

@@ -1,0 +1,12 @@
+site_name: underengineered
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.tabs
+    - content.code.annotate
+  pallete:
+    primarty: teal
+plugins:
+  - search
+  # - macros
