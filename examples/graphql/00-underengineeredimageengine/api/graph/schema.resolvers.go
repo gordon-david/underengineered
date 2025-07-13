@@ -9,6 +9,7 @@ import (
 	"context"
 	"crypto/rand"
 	"fmt"
+	"log"
 	"math/big"
 	"time"
 )
@@ -22,6 +23,11 @@ func (r *mutationResolver) UploadImage(ctx context.Context, name string) (*model
 		Name:        name,
 		Status:      model.JobStatusQueued,
 		SubmittedAt: time.Now().String(),
+	}
+
+	if err := r.jobQueueClient.redisClient.LPush(*r.jobQueueClient.redisCtx, "jobqueue", job.ID).Err(); err != nil {
+		log.Println("Redis error: ", err)
+		return nil, err
 	}
 
 	return job, nil
