@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "playwright": "^1.54.1",
+    "playwright-graphql": "^2.2.0"
+  }
+}

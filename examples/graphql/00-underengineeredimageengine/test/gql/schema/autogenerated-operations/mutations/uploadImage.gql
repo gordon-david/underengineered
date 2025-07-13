@@ -1,0 +1,9 @@
+mutation uploadImage($name: String!){
+    uploadImage(name: $name){
+        id
+        name
+        status
+        submittedAt
+        completedAt
+    }
+}

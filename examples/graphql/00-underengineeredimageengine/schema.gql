@@ -1,0 +1,26 @@
+type Mutation {
+    uploadImage(name: String!): Job!
+}
+
+type Query {
+    job(id: ID!): Job!
+}
+
+type Subscription {
+    jobStatus(id: ID!): JobStatus!
+}
+
+type Job {
+    id: ID!
+    name: String!
+    status: JobStatus!
+    submittedAt: String!
+    completedAt: String
+}
+
+enum JobStatus {
+    QUEUED
+    PROCESSING
+    SUCCEEDED
+    FAILED
+}
