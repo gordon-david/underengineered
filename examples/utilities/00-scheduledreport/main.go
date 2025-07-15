@@ -2,52 +2,66 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-	"io"
+	"log"
 	"net/http"
 	"os"
+	"text/template"
+
+	"github.com/google/go-github/v73/github"
 )
 
 var (
-	api = os.Getenv("DISCORD_WEBHOOK")
+	DiscordToken = os.Getenv("DISCORD_WEBHOOK")
+	GithubToken  = os.Getenv("GITHUB_TOKEN")
 )
 
 func main() {
-	if len(api) == 0 {
-		panic("DISCORD_WEBHOOK is null")
+	if len(DiscordToken) == 0 {
+		log.Fatal("DISCORD_WEBHOOK is null")
 	}
 
-	res := pushNotification(`# this is a test
-From your local *neighborhood* **Discord Bot**
+	if len(GithubToken) == 0 {
+		log.Fatal("GITHUB_TOKEN is null")
+	}
 
-:)`)
+	client := github.NewClient(nil).WithAuthToken(GithubToken)
 
-	println("Response:  \nStatus:", res.Status)
-
-	resBody, err := io.ReadAll(res.Body)
-
+	issues, _, err := client.Issues.ListByRepo(context.Background(), "gordon-david", "underengineered", nil)
 	if err != nil {
 		panic(err)
 	}
 
-	println("Body:", string(resBody))
+	tmpl, _ := template.New("Issues").Parse(`
+# Issues
+{{range .}}- [{{.GetTitle}}]({{.GetHTMLURL}})
+{{end}}
+`)
+	var buffer bytes.Buffer
+	tmpl.Execute(&buffer, issues)
+	issuesText := buffer.String()
+	println(issuesText)
 
+	pushNotification(issuesText)
 }
 
 type Payload struct {
 	Content string `json:"content"`
+	Flags   int    `json:"flags"` // "4" avoids embeds
 }
 
 func pushNotification(content string) *http.Response {
-	__content, err := json.Marshal(Payload{Content: content})
+	body, err := json.Marshal(Payload{Content: content, Flags: 4})
+
 	if err != nil {
 		panic(err)
 	}
 
-	res, err := http.Post(api, "application/json", bytes.NewReader(__content))
+	res, err := http.Post(DiscordToken, "application/json", bytes.NewReader(body))
 
-	if err != nil {
-		panic(err)
+	if err != nil || res.StatusCode < 200 || res.StatusCode >= 300 {
+		log.Fatal("Error pushing notification to Discord: ", res.Status, err)
 	}
 
 	return res
