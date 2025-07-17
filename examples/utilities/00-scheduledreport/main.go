@@ -26,21 +26,13 @@ func main() {
 		log.Fatal("GITHUB_TOKEN is null")
 	}
 
-	client := github.NewClient(nil).WithAuthToken(GithubToken)
+	client := newGithubClient()
 
-	issues, _, err := client.Issues.ListByRepo(context.Background(), "gordon-david", "underengineered", nil)
-	if err != nil {
-		panic(err)
+	summary := Summary{
+		OpenIssues: client.getOpenIssues(),
 	}
 
-	tmpl, _ := template.New("Issues").Parse(`
-# Issues
-{{range .}}- [{{.GetTitle}}]({{.GetHTMLURL}})
-{{end}}
-`)
-	var buffer bytes.Buffer
-	tmpl.Execute(&buffer, issues)
-	issuesText := buffer.String()
+	issuesText := parseSummary(summary)
 	println(issuesText)
 
 	pushNotification(issuesText)
@@ -65,4 +57,46 @@ func pushNotification(content string) *http.Response {
 	}
 
 	return res
+}
+
+func parseSummary(summary Summary) string {
+	tmpl, _ := template.New("summary").Parse(`
+# Summary
+
+> ## Open Issues ({{len .OpenIssues}}){{range .OpenIssues}}
+> - [{{.GetNumber}}]({{.GetHTMLURL}}) {{.GetTitle}} (by @{{.GetUser.GetLogin}}){{end}}
+
+`)
+	var buffer bytes.Buffer
+	tmpl.Execute(&buffer, summary)
+	return buffer.String()
+}
+
+type Summary struct {
+	OpenIssues []*github.Issue
+}
+
+type GithubClient struct {
+	owner  string
+	repo   string
+	ctx    context.Context
+	client *github.Client
+}
+
+func newGithubClient() *GithubClient {
+	return &GithubClient{
+		owner:  "gordon-david",
+		repo:   "underengineered",
+		ctx:    context.Background(),
+		client: github.NewClient(nil).WithAuthToken(os.Getenv("GITHUB_TOKEN")),
+	}
+}
+
+func (c *GithubClient) getOpenIssues() []*github.Issue {
+	opts := &github.IssueListByRepoOptions{
+		State: "open",
+	}
+
+	issues, _, _ := c.client.Issues.ListByRepo(c.ctx, c.owner, c.repo, opts)
+	return issues
 }
